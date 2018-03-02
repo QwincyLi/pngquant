@@ -1,8 +1,8 @@
 {
   "name": "pngquant",
-  "version": "0.0.1",
-  "description": "The package template for getting started.",
-  "author": "Cocos Creator",
+  "version": "0.1.0",
+  "description": "a png compression plug for build project.",
+  "author": "Saint",
   "main": "main.js",
   "main-menu": {
     "i18n:MAIN_MENU.package.title/pngquant": {
