@@ -1,7 +1,7 @@
 var utils = require(Editor.url('packages://pngquant/utils/utils'));
 var child_process = require("child_process");
 
-module.exports = Editor.Panel.extend({
+Editor.Panel.extend({
   // css style for panel
   style : `
 
