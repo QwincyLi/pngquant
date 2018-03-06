@@ -1,12 +1,8 @@
 var utils = require(Editor.url('packages://pngquant/utils/utils'));
+var child_process = require("child_process");
 
-// panel/index.js, this filename needs to match the one registered in package.json
-Editor.Panel.extend({
+module.exports = Editor.Panel.extend({
   // css style for panel
-  // style: `
-  //   :host { margin: 5px; }
-  //   h2 { color: #f90; }
-  // `,
   style : `
 
   `,
@@ -24,6 +20,9 @@ Editor.Panel.extend({
           </ui-select>
           <ui-button id="start" v-on:confirm="startCompression">${Editor.T('pngquant.start')}</ui-button>
       </ui-prop>
+      <ui-prop name="${Editor.T('pngquant.progress')}">
+          <ui-progress style="width: 90%;" v-value="progress">0</ui-progress>
+      </ui-prop>
       <hr/>
         <div style="overflow:scroll;height:100%">
             <div v-for="item of list" id="item">
@@ -40,13 +39,6 @@ Editor.Panel.extend({
         </div>
     </head>
   `,
-  // template: `
-  //   <h2>pngquant</h2>
-  //   <hr />
-  //   <div>State: <span id="label">--</span></div>
-  //   <hr />
-  //   <ui-button id="btn">Send To Main</ui-button>
-  // `,
 
   dependencies : [
       'packages://pngquant/lib/jquery.min.js',
@@ -55,21 +47,20 @@ Editor.Panel.extend({
 
   // element and variable binding
   $: {
-    // btn: '#btn',
-    // label: '#label',
+    
   },
 
   // method executed when template and styles are successfully loaded and initialized
   ready () {
-    // this.$btn.addEventListener('confirm', () => {
-    //   Editor.Ipc.sendToMain('pngquant:clicked');
-    // });
-      new window.Vue({
+    
+      this.vue = new window.Vue({
         el : this.shadowRoot,
 
         data : {
           list : [],
           project : 'web-mobile',
+
+          progress : 0,
         },
 
         methods: {
@@ -81,17 +72,53 @@ Editor.Panel.extend({
           startCompression(){
               if(utils.checkIsExistProject(this.project)){
                 this.list = utils.loadPngFiles();
-                utils.compressionPng();
+                this.compressionPng();
               }
           },
+
+          compressionPng() {
+            let self = this;
+            Editor.success("pngquant start!")
+
+            let index = 0;
+
+            let pngquant_path = Editor.url('packages://pngquant/tool/windows/pngquant.exe');
+            let cmd = pngquant_path + " --transbug --force 256 --ext .png";
+
+            let item = this.list[index];
+            let exe_cmd = cmd + ' ' + item.path;
+            Editor.log("pngquant : " + item.path);
+
+            self.progress = 0;
+
+            function exec() {
+              child_process.exec(exe_cmd, { timeout: 3654321 }, function (error, stdout, stderr) {
+                if (stderr) {
+                  Editor.error("pngquant error : " + stderr);
+                  //return;
+                }
+                if (index < self.list.length - 1) {
+
+                  index++;
+                  item = self.list[index];
+                  exe_cmd = cmd + ' ' + item.path;
+                  Editor.log("pngquant : " + item.path);
+                  self.progress = parseInt(index / self.list.length * 100);
+                  exec();
+                } else {
+                  Editor.success("pngquant finished!");
+                  self.progress = 100;
+                }
+              })
+            }
+            exec();
+          }
         }
       })
   },
 
   // register your ipc messages here
   messages: {
-    // 'pngquant:hello' (event) {
-    //   this.$label.innerText = 'Hello!';
-    // }
+    
   }
 });
