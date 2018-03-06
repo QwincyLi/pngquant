@@ -1,10 +1,8 @@
 var path = require("path");
 var fs = require("fs");
-var child_process = require("child_process");
 
 var res_path = null;
 var list = [];
-var process_limit = 4;
 
 class utils {
 
@@ -83,39 +81,6 @@ class utils {
         } else {
             return false
         }
-    }
-
-    static compressionPng(){
-        Editor.success("pngquant start!")
-
-        let index= 0;
-
-        let pngquant_path = Editor.url('packages://pngquant/tool/windows/pngquant.exe');
-        let cmd = pngquant_path + " --transbug --force 256 --ext .png";
-       
-        let item = list[index];
-        let exe_cmd = cmd + ' ' + item.path;
-        Editor.log("pngquant : " + item.path);
-        
-        function exec(){
-            child_process.exec(exe_cmd, { timeout: 3654321 }, function (error, stdout, stderr){
-                if(stderr){
-                    Editor.error("pngquant error : " + stderr);
-                    //return;
-                }
-                if(index < list.length - 1){
-                    index++;
-                    item = list[index];
-                    exe_cmd = cmd + ' ' + item.path;
-                    exec();
-                    Editor.log("pngquant : " + item.path);
-                }else{
-                    Editor.success("pngquant finished!");
-                }
-                
-            })
-        }
-        exec();
     }
 }
 
