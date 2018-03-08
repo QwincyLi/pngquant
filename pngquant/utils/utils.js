@@ -6,28 +6,12 @@ var list = [];
 
 class utils {
 
-    static checkIsExistPngquant( target){
-        let proj_path = Editor.projectInfo.path;
-
-        
-    }
-
     static checkIsExistProject( target){
         let proj_path = Editor.projectPath;
         res_path = null;
 
-        if(target == "web-mobile"){
-            proj_path = `${path.sep}build${path.sep}web-mobile`;
-            res_path = `${Editor.projectInfo.path}${proj_path}${path.sep}res`
-        }else if(target == "native-default"){
-            //proj_path = Editor.projectPath + "build/webmobile"
-        }else if(target == "native-binary"){
-
-        }else if(target == "native-binary"){
-
-        }else{
-            return false;
-        }
+        proj_path = path.sep + "build" + path.sep + target;
+        res_path = Editor.projectInfo.path + proj_path + path.sep + "res";
 
         Editor.log(`正在检测构建工程是否存在：${Editor.projectInfo.path}${proj_path}`);
         try{
