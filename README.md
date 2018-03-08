@@ -1,6 +1,8 @@
 # pngquant
 a pngquant plug for cocos creator
 
+support all(web-mobile,web-desktop,jsb-default,jsb-binary,jsb-link) build project!
+
 ## Usage:
 1. build cocos creator project!
 2. open plug panel!
@@ -9,7 +11,6 @@ a pngquant plug for cocos creator
 5. enjoy!
 
 ## Issue:
-1. only support web-mobile now!
-2. only support window now!
+1. only support window now!
 
 ### updating
