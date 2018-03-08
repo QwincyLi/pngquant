@@ -14,9 +14,10 @@ Editor.Panel.extend({
       <ui-prop name="${Editor.T('pngquant.proj')}">
           <ui-select id="proj" v-on:confirm="selectProject">
             <option value="web-mobile">web-mobile</option>
-            <option value="native-default">native-default</option>
-            <option value="native-binary">native-binary</option>
-            <option value="native-link">native-link</option>
+            <option value="web-desktop">web-desktop</option>
+            <option value="jsb-default">jsb-default</option>
+            <option value="jsb-binary">jsb-binary</option>
+            <option value="jsb-link">jsb-link</option>
           </ui-select>
           <ui-button id="start" v-on:confirm="startCompression">${Editor.T('pngquant.start')}</ui-button>
       </ui-prop>
@@ -65,6 +66,7 @@ Editor.Panel.extend({
 
         methods: {
           selectProject(event){
+            this.list = [];
             Editor.log(event.target.value);
             this.project = event.target.value;
           },
