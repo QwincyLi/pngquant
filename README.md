@@ -11,6 +11,6 @@ support all(web-mobile,web-desktop,jsb-default,jsb-binary,jsb-link) build projec
 5. enjoy!
 
 ## Issue:
-1. only support window now!
+1. only support windows now!
 
 ### updating
